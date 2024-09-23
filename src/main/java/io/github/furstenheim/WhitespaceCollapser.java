@@ -50,8 +50,12 @@ class WhitespaceCollapser {
         // Traverse the tree
         while (node != element) {
             if (NodeUtils.isNodeType3(node) || NodeUtils.isNodeType4(node)) {
+                if (!(node instanceof TextNode)) {
+                    node = remove(node);
+                    continue;
+                }
                 TextNode textNode = (TextNode) node;
-                String value = textNode.attributes().get("#text").replaceAll("[ \\r\\n\\t]+", " ");
+                String value = textNode.attributes().get("#text");
                 if ((prevText == null || Pattern.compile(" $").matcher(prevText.text()).find()) &&!prevVoid && value.charAt(0) == ' ') {
             value = value.substring(1);
                 }
